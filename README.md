@@ -23,49 +23,6 @@ Good / Bad / Ugly Code:
 
 TODO: provide examples of code you wrote from this project that you think is good (elegant, simple, useful), bad (hack-y, brittle, unreadable), and ugly (particularly inelegant). Provide a sentence or two of justification for the examples.
 
-# Using This Base Code
-
-Before you dive into the code, it helps to understand the overall structure of this repository.
-- Files you should read and/or edit:
-    - ```main.cpp``` creates the game window and contains the main loop. You should read through this file to understand what it's doing, but you shouldn't need to change things (other than window title, size, and maybe the initial Mode).
-    - ```GameMode.*pp``` declaration+definition for the GameMode, which is the base0 code's Game struct, ported to use the new helper classes and loading style.
-    - ```CratesMode.*pp``` a game mode that involves flying around a pile of crates. Demonstrates (somewhat) how to use the Scene object. You may want to use this rather than GameMode as the starting point for your game.
-    - ```WalkMesh.*pp``` starter code that might become walk mesh code with your diligence.
-    - ```Sound.*pp``` spatial sound code. Relatively complete, but please read and understand.
-    - ```meshes/export-meshes.py``` exports meshes from a .blend file into a format usable by our game runtime. You might want to also use this to export your WalkMesh.
-    - ```meshes/export-scene.py``` exports the transform hierarchy of a blender scene to a file. Probably very useful for your game.
-    - ```Jamfile``` responsible for telling FTJam how to build the project. If you add any additional .cpp files or want to change the name of your runtime executable you will need to modify this.
-    - ```.gitignore``` ignores the ```objs/``` directory and the generated executable file. You will need to change it if your executable name changes. (If you find yourself changing it to ignore, e.g., your editor's swap files you should probably, instead be investigating making this change in the global git configuration.)
-- Files you should read the header for (and use):
-    - ```MenuMode.hpp``` presents a menu with configurable choices. Can optionally display another mode in the background.
-    - ```Scene.hpp``` scene graph implementation.
-    - ```Mode.hpp``` base class for modes (things that recieve events and draw).
-    - ```Load.hpp``` asset loading system. Very useful for OpenGL assets.
-    - ```MeshBuffer.hpp``` code to load mesh data in a variety of formats (and create vertex array objects to bind it to program attributes).
-    - ```data_path.hpp``` contains a helper function that allows you to specify paths relative to the executable (instead of the current working directory). Very useful when loading assets.
-    - ```draw_text.hpp``` draws text (limited to capital letters + *) to the screen.
-    - ```compile_program.hpp``` compiles OpenGL shader programs.
-- Files you probably don't need to read or edit:
-    - ```GL.hpp``` includes OpenGL prototypes without the namespace pollution of (e.g.) SDL's OpenGL header. It makes use of ```glcorearb.h``` and ```gl_shims.*pp``` to make this happen.
-    - ```make-gl-shims.py``` does what it says on the tin. Included in case you are curious. You won't need to run it.
-    - ```read_chunk.hpp``` contains a function that reads a vector of structures prefixed by a magic number. It's surprising how many simple file formats you can create that only require such a function to access.
-
-## Asset Build Instructions
-
-In order to generate the ```dist/crates.pnc``` file, tell blender to execute the ```meshes/export-meshes.py``` script:
-
-```
-blender --background --python meshes/export-meshes.py -- meshes/crates.blend dist/crates.pnc
-```
-
-In order to generate the ```dist/crates.scene``` file, tell blender to execute the ```meshes/export-scene.py``` script:
-
-```
-blender --background --python meshes/export-scene.py -- meshes/crates.blend dist/crates.scene
-```
-
-There is a Makefile in the ```meshes``` directory that will do this for you.
-
 ## Runtime Build Instructions
 
 The runtime code has been set up to be built with [FT Jam](https://www.freetype.org/jam/).
