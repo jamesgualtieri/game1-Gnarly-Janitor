@@ -13,15 +13,15 @@ Screen Shot:
 
 How To Play:
 
-TODO: describe the controls and (if needed) goals/strategy.
+Using the WASD keys, move the avatar around the super crazy level to clean up spills. Clean up 20 spills before the time runs out to win, otherwise, you lose. If the mop gets too dirty you'll have to go grab another one from the supply closet.
 
 Changes From The Design Document:
 
-TODO: what did you need to add/remove/modify from the original design? Why?
+Ran out of time to add the reinitilization of the game and resetting to play again. I added some more sound effects than I planned originally because iether Jim or SOs sugested I should.
 
 Good / Bad / Ugly Code:
 
-TODO: provide examples of code you wrote from this project that you think is good (elegant, simple, useful), bad (hack-y, brittle, unreadable), and ugly (particularly inelegant). Provide a sentence or two of justification for the examples.
+The entire game is some pretty ugly code to be completely honest. For example, my player collision with spills functiono is just a distance < epsilon funciton. Thankfully, with the help of nice game developers' postings around the internet I was able to get through some of the more annoying bits of math for this one. Certainly some of my ugliest code I've written in a bit.
 
 ## Runtime Build Instructions
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Mode.hpp"
+#include "WalkMesh.hpp"
+
 
 #include "MeshBuffer.hpp"
 #include "GL.hpp"
@@ -13,11 +15,11 @@
 
 #include <vector>
 
-// The 'CratesMode' shows scene with some crates in it:
+// The 'JanitorMode' shows scene with some crates in it:
 
-struct CratesMode : public Mode {
-	CratesMode();
-	virtual ~CratesMode();
+struct JanitorMode : public Mode {
+	JanitorMode();
+	virtual ~JanitorMode();
 
 	//handle_event is called when new mouse or keyboard events are received:
 	// (note that this might be many times per frame or never)
@@ -32,6 +34,8 @@ struct CratesMode : public Mode {
 
 	//starts up a 'quit/resume' pause menu:
 	void show_pause_menu();
+	void show_win();
+	void show_lose();
 
 	struct {
 		bool forward = false;
@@ -46,11 +50,24 @@ struct CratesMode : public Mode {
 	Scene::Camera *camera = nullptr;
 
 	Scene::Object *large_crate = nullptr;
-	Scene::Object *small_crate = nullptr;
-
-	//when this reaches zero, the 'dot' sample is triggered at the small crate:
-	float dot_countdown = 1.0f;
+	Scene::Object *player = nullptr;
+	Scene::Object *vomit = nullptr;
+	Scene::Object *blood = nullptr;
 
 	//this 'loop' sample is played at the large crate:
 	std::shared_ptr< Sound::PlayingSample > loop;
+	std::shared_ptr< Sound::PlayingSample > woosh;
+
+	WalkMesh::WalkPoint wp;
+
+	glm::vec3 player_pos;
+
+	bool win = false;
+	bool lose = false;
+	bool mop_dirty = false;
+
+	float game_time = 60.0f;
+	uint messes_cleaned = 0;
+	uint score = 0;
+
 };

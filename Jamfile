@@ -62,13 +62,13 @@ NAMES =
 	vertex_color_program
 	Scene
 	Mode
-	GameMode
-	CratesMode
+	JanitorMode
 	MenuMode
 	Load
 	MeshBuffer
 	draw_text
 	Sound
+	WalkMesh
 	;
 
 if $(OS) = NT {

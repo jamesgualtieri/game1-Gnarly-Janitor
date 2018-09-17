@@ -1,25 +1,32 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include <unordered_map>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <unordered_map>
+
+#include "read_chunk.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp> //allows the use of 'uvec2' as an unordered_map key
+// #include <glm/gtx/string_cast.hpp>
 
 struct WalkMesh {
 	//Walk mesh will keep track of triangles, vertices:
 	std::vector< glm::vec3 > vertices;
 	std::vector< glm::uvec3 > triangles; //CCW-oriented
-
 	//TODO: consider also loading vertex normals for interpolated "up" direction:
-	//std::vector< glm::vec3 > vertex_normals;
+	std::vector< glm::vec3 > vertex_normals;
 
 	//This "next vertex" map includes [a,b]->c, [b,c]->a, and [c,a]->b for each triangle, and is useful for checking what's over an edge from a given point:
 	std::unordered_map< glm::uvec2, uint32_t > next_vertex;
 
 
 	//Construct new WalkMesh and build next_vertex structure:
-	WalkMesh(std::vector< glm::vec3 > const &vertices_, std::vector< glm::uvec3 > const &triangles_);
+	WalkMesh(std::string file);
 
 	struct WalkPoint {
 		glm::uvec3 triangle = glm::uvec3(-1U); //indices of current triangle
@@ -31,7 +38,7 @@ struct WalkMesh {
 	WalkPoint start(glm::vec3 const &world_point) const;
 
 	//used to update walk point:
-	void walk(WalkPoint &wp, glm::vec3 const &step) const;
+	void walk(WalkPoint &wp, glm::vec3 const &step, size_t depth = 0) const;
 
 	//used to read back results of walking:
 	glm::vec3 world_point(WalkPoint const &wp) const {
@@ -42,10 +49,12 @@ struct WalkMesh {
 
 	glm::vec3 world_normal(WalkPoint const &wp) const {
 		//TODO: could interpolate vertex_normals instead of computing the triangle normal:
-		return glm::normalize(glm::cross(
-			vertices[wp.triangle.y] - vertices[wp.triangle.x],
-			vertices[wp.triangle.z] - vertices[wp.triangle.x]
-		));
+
+		return glm::normalize(
+			wp.weights.x * vertex_normals[wp.triangle.x]
+		     + wp.weights.y * vertex_normals[wp.triangle.y]
+		     + wp.weights.z * vertex_normals[wp.triangle.z]
+		);
 	}
 
 };
@@ -85,3 +94,4 @@ Game::update(float elapsed) {
 	player_right = glm::cross(player_forward, player_up);
 
 }
+*/
